@@ -5,10 +5,10 @@
 #include "Container.h"
 
 
-Container::Container(int size, int head, int tail) :_size(size),_head_pos
-   (head),_tail_pos(tail)
+Container::Container(int size, int head, int tail) :_size(size),_start_pos
+   (head),_end_pos(tail)
 {}
 
 int Container::Capacity() {
-  return ((_size)-_tail_pos);
+  return ((_size)-_end_pos);
 }

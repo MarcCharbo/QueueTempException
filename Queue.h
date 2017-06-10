@@ -18,25 +18,39 @@ public:
   }
 
   //Copy ctor
-  Queue(const Queue& src):Container(src._size,src._head_pos,src._tail_pos){
+  Queue(const Queue& src):Container(src._size,src._start_pos,src._end_pos){
     _queue = new T[src._size];
-    for (int i=0;i<_tail_pos;++i){
+    for (int i=0;i<_end_pos;++i){
       _queue[i] = src._queue[i];
     }
   }
 
   // Copy assignment
-  Queue& operator=(const Queue &src) {
+  Queue<T>& operator=(const Queue<T> &src) {
     Queue temp_q(src);
     swap(*this, temp_q);
     return *this;
   }
 
+  template <class T2>
+  Queue<T>& operator=(const Queue<T2>& src) {
+    auto temp_size = src.GetSize();
+    Queue temp_q(temp_size);
+    temp_q._start_pos = src.GetStartIdx();
+    temp_q._end_pos = src.GetEndIdx();
+    for (int i=0;i<_end_pos;++i){
+      _queue[i] = static_cast<T>(src.GetIdx(i));
+    }
+    return *this;
+
+  }
+
+
   friend void swap(Queue& lhs, Queue& rhs){
     using std::swap;
     swap(lhs._queue, rhs._queue);
-    swap(lhs._head_pos, rhs._head_pos);
-    swap(lhs._tail_pos, rhs._tail_pos);
+    swap(lhs._start_pos, rhs._start_pos);
+    swap(lhs._end_pos, rhs._end_pos);
     swap(lhs._size, rhs._size);
   }
 
@@ -45,23 +59,31 @@ public:
   };
 
   bool IsEmpty() const override {
-    return (_head_pos == _tail_pos);
+    return (_start_pos == _end_pos);
   }
 
-  int Size() const override {
+  int GetSize() const override {
     return this->_size;
+  }
+
+  int GetEndIdx() const override{
+    return _end_pos;
+  }
+
+  int GetStartIdx() const override{
+    return _start_pos;
   }
 
   void Push(const T& x){
     if(Capacity()==0) {
       _queue = Resize(_queue);
     }
-      _queue[_tail_pos++] = x;
+      _queue[_end_pos++] = x;
   }
 
   T& Pop(){
     if(!IsEmpty()){
-      return _queue[_head_pos++];
+      return _queue[_start_pos++];
 
     }
     else{
@@ -69,21 +91,22 @@ public:
     }
   }
 
-  T& Get(int idx){
+  T& GetIdx(int idx) const{
     return _queue[idx];
   }
+
 
 protected:
   T* Resize(T* q){
     _size = _size*2;
     T* temp_queue = new T[_size];
     int idx=0;
-    for (int i=_head_pos;i<_tail_pos;++i){
-      temp_queue[idx] = q[_head_pos+i];
+    for (int i=_start_pos;i<_end_pos;++i){
+      temp_queue[idx] = q[_start_pos+i];
       idx++;
     }
-    _tail_pos = _tail_pos - _head_pos;
-    _head_pos = 0;
+    _end_pos = _end_pos - _start_pos;
+    _start_pos = 0;
     delete[] q;
     q = temp_queue;
     return q;
