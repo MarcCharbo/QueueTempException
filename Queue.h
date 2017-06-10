@@ -9,7 +9,7 @@
 #include "Container.h"
 
 template <typename T>
-class Queue:Container {
+class Queue:public Container {
 
 public:
   // ctor
@@ -25,6 +25,11 @@ public:
     }
   }
 
+  // dtor
+  ~Queue(){
+    delete[] _queue;
+  };
+
   // Copy assignment
   Queue<T>& operator=(const Queue<T> &src) {
     Queue temp_q(src);
@@ -32,6 +37,7 @@ public:
     return *this;
   }
 
+  // Copy assignment for different type
   template <class T2>
   Queue<T>& operator=(const Queue<T2>& src) {
     auto temp_size = src.GetSize();
@@ -45,7 +51,7 @@ public:
 
   }
 
-
+  // Swap
   friend void swap(Queue& lhs, Queue& rhs){
     using std::swap;
     swap(lhs._queue, rhs._queue);
@@ -54,26 +60,8 @@ public:
     swap(lhs._size, rhs._size);
   }
 
-  ~Queue(){
-    delete[] _queue;
-  };
 
-  bool IsEmpty() const override {
-    return (_start_pos == _end_pos);
-  }
-
-  int GetSize() const override {
-    return this->_size;
-  }
-
-  int GetEndIdx() const override{
-    return _end_pos;
-  }
-
-  int GetStartIdx() const override{
-    return _start_pos;
-  }
-
+  // Push at end (tail) of queue
   void Push(const T& x){
     if(Capacity()==0) {
       _queue = Resize(_queue);
@@ -81,6 +69,7 @@ public:
       _queue[_end_pos++] = x;
   }
 
+  // Pop at start (head) of queue
   T& Pop(){
     if(!IsEmpty()){
       return _queue[_start_pos++];
@@ -91,12 +80,14 @@ public:
     }
   }
 
+  // Get value at index position
   T& GetIdx(int idx) const{
     return _queue[idx];
   }
 
 
 protected:
+  // Resize queue, takes curr size times 2
   T* Resize(T* q){
     _size = _size*2;
     T* temp_queue = new T[_size];

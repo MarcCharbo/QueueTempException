@@ -13,7 +13,7 @@ public:
   ExceptHandler()= default;
   virtual ~ExceptHandler(){}
   virtual const char * what () const throw () {
-      return "C++ Exception";
+      return "Generic Exception";
     }
 
 private:

@@ -11,10 +11,10 @@ class Container {
 public:
   Container(int size=50, int head=0, int tail=0);
   virtual ~Container(){};
-  virtual bool IsEmpty() const =0;
-  virtual int GetSize() const=0;
-  virtual int GetEndIdx() const=0;
-  virtual int GetStartIdx() const=0;
+  int GetEndIdx() const;
+  int GetStartIdx() const;
+  int GetSize() const;
+  bool IsEmpty() const;
 
 protected:
   int _size;
