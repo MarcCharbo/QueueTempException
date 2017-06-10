@@ -5,9 +5,18 @@
 #ifndef QUEUETEMPLATEEXCEPTION_EXCEPTHANDLER_H
 #define QUEUETEMPLATEEXCEPTION_EXCEPTHANDLER_H
 
+#include <iostream>
+#include <exception>
 
-class ExceptHandler {
+class ExceptHandler: public std::exception {
+public:
+  ExceptHandler()= default;
+  virtual ~ExceptHandler(){}
+  virtual const char * what () const throw () {
+      return "C++ Exception";
+    }
 
+private:
 };
 
 

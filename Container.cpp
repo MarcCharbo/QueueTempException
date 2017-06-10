@@ -5,7 +5,8 @@
 #include "Container.h"
 
 
-Container::Container(int size) :_size(size),_head_pos(0),_tail_pos(0)
+Container::Container(int size, int head, int tail) :_size(size),_head_pos
+   (head),_tail_pos(tail)
 {}
 
 int Container::Capacity() {
